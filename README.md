@@ -1,8 +1,7 @@
 # 🥗 Vibe Nutrition Tracker
 
-<p align="center">
-  <img src="screenshot.png" alt="Dashboard Screenshot" width="800"/>
-</p>
+<img width="1058" height="952" alt="image" src="https://github.com/user-attachments/assets/d8f84e12-a195-4514-a566-c92720c83d1b" />
+
 
 A modern, responsive, and sleek single-page application for tracking daily nutrition, hitting macronutrient goals, and logging meals. Built with a robust full-stack architecture focusing on aesthetic UI, robust validation, and real-time state management.
 
