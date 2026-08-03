@@ -1,16 +1,21 @@
 import express from 'express';
 import cors from 'cors';
 import mealRoutes from './routes/mealRoutes';
+import goalRoutes from './routes/goalRoutes';
+import summaryRoutes from './routes/summaryRoutes';
 import { errorHandler } from './middleware/errorHandler';
 
 const app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// API Routes
+// Routes
 app.use('/api/meals', mealRoutes);
+app.use('/api/goals', goalRoutes);
+app.use('/api/summary', summaryRoutes);
 
 // Base route
 app.get('/', (req, res) => {
@@ -20,6 +25,6 @@ app.get('/', (req, res) => {
 // Global Error Handler
 app.use(errorHandler);
 
-app.listen(port, () => {
-  console.log(`Backend server listening at http://localhost:${port}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
