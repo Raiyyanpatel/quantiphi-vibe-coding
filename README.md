@@ -1,21 +1,30 @@
-# The Calorie Tracker & Macro Dashboard
+# 🥗 Vibe Nutrition Tracker
 
-## 📖 Overview
-A sleek, modern health-tracking prototype that serves as a user's daily food journal. It allows users to log meals, select specific fitness goals (Weight Loss, Maintenance, Muscle Gain), and seamlessly tracks daily caloric and macronutrient progress against dynamically updating targets.
+A modern, responsive, and sleek single-page application for tracking daily nutrition, hitting macronutrient goals, and logging meals. Built with a robust full-stack architecture focusing on aesthetic UI, robust validation, and real-time state management.
 
-## 🏗️ System Architecture
-The application is built using a decoupled architecture, separating the client UI from the backend API:
-- **Frontend (Client)**: React, Vite, TypeScript, Tailwind CSS, Axios, React Hook Form. It handles UI state, data visualization, and user inputs.
-- **Backend (Server)**: Node.js, Express, TypeScript. It manages business logic, in-memory state storage, macro calculations, and scaling logic based on active goals.
+---
 
 ## ✨ Features
-1. **Dynamic Fitness Goals**: Choose between Weight Loss, Maintenance, and Muscle Gain. The system automatically recalculates your daily calorie limit and macro targets based on the selection.
-2. **Precision Food Logging**: Log any food item from the built-in mock dataset (e.g., Chicken Breast, Rice, Apple) with an exact weight in grams. The backend scales the nutritional data against a 100g baseline with high precision.
-3. **Macro Tracking**: Visualizes calories, protein, carbs, and fats consumed vs. remaining using dynamic progress bars.
-4. **Daily History Management**: View all logged meals in a tabular history format with the ability to delete specific meals and instantly reverse their macro impact.
-5. **Robust Validation**: Server-side and client-side validation ensures accurate data entry.
 
-## 📂 File Structure
+1. **Dynamic Calorie & Macro Tracking**: Automatically calculates daily totals against specific targets based on your active fitness goal. Visualizes calories, protein, carbs, and fats consumed vs. remaining using dynamic progress bars.
+2. **Goal Setting**: Switch between Weight Loss, Maintenance, and Muscle Gain seamlessly. The dashboard recalibrates instantly.
+3. **Precision Food Logging**: Log any food item with an exact weight in grams. The backend scales the nutritional data against a 100g baseline with high precision.
+4. **"AI" Image Analysis**: A mocked image upload flow that automatically analyzes food photos to autofill the logging form.
+5. **Premium UI/UX**: Built with Tailwind CSS, featuring subtle glassmorphism, micro-interactions, responsive design, and smooth Toast notifications (`react-hot-toast`). Uses `lucide-react` for polished iconography.
+6. **Centralized State Management**: Powered by React Context for scalable and prop-drilling-free data flow.
+7. **Robust Validation**: Server-side validation ensures accurate data entry (prevents zero/negative weights, extremely large weights, and invalid food names).
+
+---
+
+## 🏗️ System Architecture
+
+The application is built using a decoupled architecture, separating the client UI from the backend API:
+- **Frontend (React + Vite)**: TypeScript, Tailwind CSS, `lucide-react`, `react-hot-toast`, React Context API, Axios, `react-hook-form`. It handles UI state, data visualization, and user inputs.
+- **Backend (Node.js + Express)**: TypeScript, MVC Architecture (Controllers, Routes, Services). It manages business logic, in-memory state storage, macro calculations, input validation, and scaling logic based on active goals.
+
+---
+
+## 📂 Folder Structure
 
 ```text
 quantiphi-vibe-coding/
@@ -35,8 +44,8 @@ quantiphi-vibe-coding/
     ├── src/
     │   ├── assets/           # Static assets
     │   ├── components/       # Reusable UI elements (FoodLogForm, GoalToggle, CalorieProgressBar, MacroCard, MealHistory)
-    │   ├── context/          # React Context (if applicable)
-    │   ├── hooks/            # Custom React hooks
+    │   ├── context/          # React Context (DashboardContext.tsx)
+    │   ├── hooks/            # Custom React hooks (useDashboard)
     │   ├── pages/            # Page layouts (Dashboard)
     │   ├── services/         # API integration (api.ts - Axios instance)
     │   ├── types/            # Frontend TypeScript interfaces
@@ -47,32 +56,62 @@ quantiphi-vibe-coding/
     └── vite.config.ts        # Vite bundler configuration
 ```
 
-## 🚀 Run Commands
+---
 
-### Starting the Backend
-1. Open a terminal and navigate to the backend directory:
-   ```bash
-   cd backend
-   ```
-2. Install dependencies (if you haven't already):
-   ```bash
-   npm install
-   ```
-3. Start the Express development server (runs on port 5000):
-   ```bash
-   npm run dev
-   ```
+## 🚀 Setup Instructions
 
-### Starting the Frontend
-1. Open a new, separate terminal and navigate to the frontend directory:
-   ```bash
-   cd frontend
-   ```
-2. Install dependencies (if you haven't already):
-   ```bash
-   npm install
-   ```
-3. Start the Vite development server (usually runs on port 5173):
-   ```bash
-   npm run dev
-   ```
+### 1. Start the Backend
+Open a terminal and navigate to the backend directory:
+```bash
+cd backend
+npm install
+npm run dev
+```
+The backend will start on `http://localhost:5000`.
+
+### 2. Start the Frontend
+Open a new, separate terminal and navigate to the frontend directory:
+```bash
+cd frontend
+npm install
+npm run dev
+```
+The frontend will start on `http://localhost:5173`.
+
+---
+
+## 📖 API Documentation
+
+The backend exposes the following RESTful endpoints running on `/api`:
+
+### Meals
+- **`GET /api/meals`**
+  - Returns a list of all logged meals for the day.
+- **`POST /api/meals`**
+  - Body: `{ "name": "string", "weight": number }`
+  - Creates a new meal and calculates its macros. Enforces strict input validation on names and weights.
+- **`DELETE /api/meals/:id`**
+  - Deletes a specific meal by ID.
+- **`POST /api/meals/analyze-image`**
+  - Mocks an AI image processing flow, returning a predefined food item and weight.
+
+### Dashboard Summary
+- **`GET /api/summary`**
+  - Returns the comprehensive daily calculation including `totalCalories`, macros, progress percentages, and whether the limit `isExceeded`.
+
+### Goals
+- **`GET /api/goals`**
+  - Returns the current active goal (`weight_loss`, `maintenance`, `muscle_gain`).
+- **`PUT /api/goals`**
+  - Body: `{ "goal": "string" }`
+  - Updates the active goal, instantly recalculating the user's calorie and macro targets.
+
+---
+
+## 🔮 Future Improvements
+
+1. **Persistent Database**: Migrate the in-memory data store to PostgreSQL or MongoDB for data persistence across server restarts.
+2. **Real AI Integration**: Hook up the `/analyze-image` endpoint to a real Vision API (e.g., Google Cloud Vision or OpenAI GPT-4V) for actual food recognition from images.
+3. **User Authentication**: Add JWT-based auth to support multiple users, secure logins, and private meal histories.
+4. **Historical Data Tracking**: Add date-picking capabilities and a time-series database structure to view and log meals for previous days, generating weekly and monthly macro trends.
+5. **Live Nutrition API**: Connect the backend to a real nutrition database (like USDA or Edamam) to accurately pull nutritional data for any food name searched by the user instead of relying on the mock fallback calculation.
